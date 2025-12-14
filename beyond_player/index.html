@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEYOND - 全屏音乐播放器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 全屏背景装饰 -->
+    <div class="fullscreen-bg"></div>
+    
+    <!-- 在线音乐加载提示 -->
+    <div class="loading-indicator" id="loadingIndicator">
+        <i class="fas fa-spinner fa-spin" style="margin-right:10px;"></i>加载在线音乐中...
+    </div>
+    
+    <!-- 控制按钮区域 -->
+    <div class="control-buttons">
+        <button class="control-btn-small" id="playlistBtn" title="音乐列表">
+            <i class="fas fa-list"></i>
+        </button>
+        <button class="control-btn-small" id="fullscreenBtn" title="切换全屏">
+            <i class="fas fa-expand"></i>
+        </button>
+    </div>
+    
+    <!-- 音乐列表面板 -->
+    <div class="playlist-panel" id="playlistPanel">
+        <div class="playlist-header">
+            <div class="playlist-title">播放列表</div>
+            <button class="close-playlist" id="closePlaylist">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="playlist" id="playlist">
+            <!-- 播放列表将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 左侧封面区域 -->
+        <div class="cover-section" id="coverSection">
+            <!-- 背景模糊层 -->
+            <div class="cover-bg"></div>
+            
+            <!-- 专辑封面图片 -->
+            <div class="album-cover">
+                <!-- 封面图将通过JavaScript动态加载 -->
+                <img id="coverImage" alt="专辑封面">
+                <div id="coverFallback" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#d2b48c;font-size:16px;text-align:center;padding:15px;">
+                    <i class="fas fa-compact-disc" style="font-size:48px;margin-bottom:15px;opacity:0.7;"></i>
+                    <div id="fallbackTitle" style="font-size:20px;margin-bottom:8px;font-weight:bold;">灰色轨迹</div>
+                    <div id="fallbackArtist" style="font-size:14px;">BEYOND</div>
+                </div>
+            </div>
+            
+            <!-- 装饰叶子 -->
+            <div class="decoration">
+                <div class="leaf leaf-1"><i class="fas fa-leaf"></i></div>
+                <div class="leaf leaf-2"><i class="fas fa-leaf"></i></div>
+                <div class="leaf leaf-3"><i class="fas fa-leaf"></i></div>
+                <div class="leaf leaf-4"><i class="fas fa-leaf"></i></div>
+            </div>
+            
+            <!-- 标题区域 -->
+            <div class="header">
+                <h1 class="title" id="songTitle">灰色轨迹</h1>
+                <div class="author" id="songArtist">BEYOND</div>
+                <div class="divider"></div>
+            </div>
+            
+            <!-- 专辑信息 -->
+            <div class="album-info" id="albumInfo">
+                <p><i class="fas fa-music"></i> 摇滚经典 · 1990年发行</p>
+                <p><i class="fas fa-clock"></i> 时长：05:23</p>
+                <p><i class="fas fa-compact-disc"></i> 专辑：天若有情 电影原声</p>
+                <p><i class="fas fa-star"></i> 词曲：黄家驹</p>
+            </div>
+            
+            <!-- 歌词显示区域 -->
+            <div class="lyrics-display" id="lyricsDisplay">
+                <!-- 歌词将通过JavaScript动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 右侧播放器区域 -->
+        <div class="player-section">
+            <!-- 时间显示 - 居中 -->
+            <div class="time-display">
+                <span class="time-current" id="timeCurrent">00:00</span>
+                <span class="time-separator">/</span>
+                <span class="time-total" id="timeTotal">05:23</span>
+            </div>
+            
+            <!-- 进度条 -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                    <div class="progress-handle"></div>
+                </div>
+            </div>
+            
+            <!-- 控制按钮 - 现在居中 -->
+            <div class="controls">
+                <div class="control-group">
+                    <!-- 播放模式按钮 -->
+                    <div class="mode-control-btn" id="modeControl" title="列表循环">
+                        <i class="fas fa-redo"></i>
+                    </div>
+                    
+                    <!-- 上一曲按钮 -->
+                    <div class="control-btn" title="上一曲">
+                        <i class="fas fa-step-backward"></i>
+                    </div>
+                    
+                    <!-- 播放/暂停按钮 -->
+                    <div class="control-btn play-btn" title="播放/暂停">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    
+                    <!-- 下一曲按钮 -->
+                    <div class="control-btn" title="下一曲">
+                        <i class="fas fa-step-forward"></i>
+                    </div>
+                    
+                    <!-- 歌词按钮 -->
+                    <div class="lyrics-control-btn" id="lyricsBtn" title="显示歌词">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 底部控制区域（音量 + 倍速） -->
+            <div class="controls-bottom">
+                <!-- 音量控制 -->
+                <div class="volume-control">
+                    <div class="volume-icon">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <div class="volume-slider-container" id="volumeSlider">
+                        <div class="volume-slider"></div>
+                        <div class="volume-handle"></div>
+                    </div>
+                </div>
+                
+                <!-- 倍速控制 -->
+                <div class="speed-control">
+                    <button class="speed-btn" title="降低速度">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <div class="speed-display">1.0X</div>
+                    <button class="speed-btn" title="提高速度">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 音频元素，用于播放在线音乐 -->
+    <audio id="audioPlayer" preload="metadata"></audio>
+
+<script src="player.js"></script>
+</body>
+</html>
